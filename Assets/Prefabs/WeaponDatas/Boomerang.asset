@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e00e5951325c444840ec567728edc0, type: 3}
+  m_Name: Boomerang
+  m_EditorClassIdentifier: 
+  Name: Boomerang
+  Speed: 10
+  AttackRate: 1.5
+  Damage: 150
+  Accuracy: 0.85
+  BulletBehaviours:
+    Through: 1
+    TurnBack: 1
+    OverTheStone: 0
+    Ricochet: 0
+    WallBounce: 0
