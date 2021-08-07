@@ -602,6 +602,7 @@ MonoBehaviour:
   _health: 500
   _attackRateMultiplier: 1
   _damageMultplier: 1
+  _critProbability: 0
   _bulletBehaviours:
     Through: 0
     TurnBack: 0
@@ -609,6 +610,7 @@ MonoBehaviour:
     Ricochet: 0
     WallBounce: 0
   _healthBar: {fileID: 5928722802657338528}
+  _damagePresenterPrefab: {fileID: 2270166428200260230, guid: 7754ea5ebc5bbdc45b1644036832413b, type: 3}
   _head: {fileID: 839922521949667624}
   OnDead:
     m_PersistentCalls:

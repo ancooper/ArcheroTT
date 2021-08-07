@@ -35,12 +35,14 @@ public class Weapon : MonoBehaviour
     var direction = (_unit.ViewAngle + Random.Range(-angleOffset, angleOffset)).ToVector2();
     var speed = _weaponData.Speed + Random.Range(-speedOffset, speedOffset);
 
+    var crit = Random.Range(0f, 1f) < _unit.CritProbability;
     var bullet = Instantiate(_bulletPrefab, _unit.transform.parent, false);
     bullet.Init(
       _unit.IsPlayer,
       (Vector2)_unit.Head.position + direction * 0.5f,
       direction * speed,
       _weaponData.Damage * _unit.DamageMultiplier,
+      crit,
       BulletBehaviours.Combine(_weaponData.BulletBehaviours, _unit.BulletBehaviours)
     );
   }

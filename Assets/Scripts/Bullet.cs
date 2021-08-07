@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 
   private Rigidbody2D _rb;
   private float _damage;
+  private bool _crit;
   private BulletBehaviours _bulletBehaviours;
   private bool _turnBack;
   private bool _fromPlayer;
@@ -16,13 +17,14 @@ public class Bullet : MonoBehaviour
     _rb = GetComponent<Rigidbody2D>();
   }
 
-  public void Init(bool fromPlayer, Vector2 position, Vector2 velocity, float damage, BulletBehaviours bb)
+  public void Init(bool fromPlayer, Vector2 position, Vector2 velocity, float damage, bool crit, BulletBehaviours bb)
   {
     _bulletBehaviours = bb;
     transform.position = position;
     _rb.velocity = velocity;
     _speed = velocity.magnitude;
     _damage = damage;
+    _crit = crit;
     _turnBack = false;
     _fromPlayer = fromPlayer;
   }
@@ -32,7 +34,7 @@ public class Bullet : MonoBehaviour
     if (other.TryGetComponent<Enemy>(out Enemy enemy))
     {
       if (_fromPlayer)
-        enemy.GetComponent<Unit>().Damage(_damage);
+        enemy.GetComponent<Unit>().Damage(_damage, _crit);
       if ((_fromPlayer && !_bulletBehaviours.Through) || (!_fromPlayer && _turnBack))
       {
         Destroy(gameObject);
@@ -43,7 +45,7 @@ public class Bullet : MonoBehaviour
     if (other.TryGetComponent<Player>(out Player player))
     {
       if (!_fromPlayer)
-        player.GetComponent<Unit>().Damage(_damage);
+        player.GetComponent<Unit>().Damage(_damage, _crit);
       if ((!_fromPlayer && !_bulletBehaviours.Through) || (_fromPlayer && _turnBack))
       {
         Destroy(gameObject);

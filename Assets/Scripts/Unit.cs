@@ -11,12 +11,14 @@ public class Unit : MonoBehaviour
   [Header("Weapon")]
   [SerializeField] private float _attackRateMultiplier = 1f;
   [SerializeField] private float _damageMultplier = 1f;
+  [SerializeField] private float _critProbability = 0f;
 
   [Header("Bullet Behaviours")]
   [SerializeField] private BulletBehaviours _bulletBehaviours;
 
   [Space]
   [SerializeField] private HealthBar _healthBar;
+  [SerializeField] private DamagePresenter _damagePresenterPrefab;
   [SerializeField] private Transform _head;
 
   private bool _active;
@@ -29,6 +31,7 @@ public class Unit : MonoBehaviour
   public bool IsALive => _health > 0;
   public float AttackRateMultiplier => _attackRateMultiplier;
   public float DamageMultiplier => _damageMultplier;
+  public float CritProbability => _critProbability;
   public BulletBehaviours BulletBehaviours => _bulletBehaviours;
   public Weapon Weapon => _weapon;
   public bool IsPlayer => _isPlayer;
@@ -53,10 +56,15 @@ public class Unit : MonoBehaviour
     _head.eulerAngles = new Vector3(0, 0, ViewAngle);
   }
 
-  public void Damage(float damage)
+  public void Damage(float damage, bool crit)
   {
+    if (crit)
+      damage *= 2f;
     _health -= damage;
     _healthBar.Health = _health;
+
+    var dp = Instantiate(_damagePresenterPrefab, transform, false);
+    dp.Init((int)damage, crit);
 
     if (!IsALive)
     {

@@ -67,12 +67,12 @@ public class Player : MonoBehaviour
   {
     var enemy = other.gameObject.GetComponent<Enemy>();
     if (enemy != null)
-      _unit.Damage(enemy.ContactDamage);
+      _unit.Damage(enemy.ContactDamage, false);
   }
 
   private void OnTriggerEnter2D(Collider2D other)
   {
     if (other.TryGetComponent<Spike>(out Spike spike))
-      _unit.Damage(spike.Damage);
+      _unit.Damage(spike.Damage, false);
   }
 }
