@@ -1,17 +1,16 @@
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(Unit))]
-public class Player : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+public class Player : Entity
 {
-  private Unit _unit;
   private Rigidbody2D _rb;
   private Vector2 _direction;
   private bool _isStoped;
 
-  void Awake()
+  protected override void Awake()
   {
-    _unit = GetComponent<Unit>();
+    base.Awake();
     _rb = GetComponent<Rigidbody2D>();
     _direction = Vector2.zero;
     _isStoped = true;
@@ -74,5 +73,10 @@ public class Player : MonoBehaviour
   {
     if (other.TryGetComponent<Spike>(out Spike spike))
       _unit.Damage(spike.Damage, false);
+  }
+
+  protected override void Dead(Unit unit)
+  {
+    _field.PlayerDead();
   }
 }

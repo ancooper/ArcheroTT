@@ -507,9 +507,9 @@ GameObject:
   - component: {fileID: 3889304192738196634}
   - component: {fileID: 4644848820974149228}
   - component: {fileID: 5774453881993339268}
-  - component: {fileID: 8540704043375321233}
   - component: {fileID: 7682091241121235742}
   - component: {fileID: 325966567324540084}
+  - component: {fileID: 8540704043375321233}
   - component: {fileID: 3556776171947911464}
   m_Layer: 9
   m_Name: ZuBat
@@ -572,20 +572,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3
---- !u!114 &8540704043375321233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9193542920865193219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be0354d5107d6c409547d02e08d092e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: d6784eccee4363d4bb8238115a8c2edd, type: 2}
-  _bulletPrefab: {fileID: 1965746900717972903, guid: 5a5321c9a3947c1479d43200a15d8917, type: 3}
 --- !u!114 &7682091241121235742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,6 +621,20 @@ MonoBehaviour:
   _coinsRange:
     Min: 6
     Max: 9
+--- !u!114 &8540704043375321233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9193542920865193219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be0354d5107d6c409547d02e08d092e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponData: {fileID: 11400000, guid: d6784eccee4363d4bb8238115a8c2edd, type: 2}
+  _bulletPrefab: {fileID: 1965746900717972903, guid: 5a5321c9a3947c1479d43200a15d8917, type: 3}
 --- !u!114 &3556776171947911464
 MonoBehaviour:
   m_ObjectHideFlags: 0

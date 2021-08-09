@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(Weapon))]
 public class Unit : MonoBehaviour
@@ -40,7 +40,7 @@ public class Unit : MonoBehaviour
   public float ViewAngle { get; set; }
   public Unit Target { get; set; }
 
-  public UnityEvent<Unit> OnDead;
+  [HideInInspector] public event Action<Unit> OnDead;
 
   private void Awake()
   {
@@ -69,7 +69,7 @@ public class Unit : MonoBehaviour
     if (!IsALive)
     {
       Destroy(gameObject, 0.01f);
-      OnDead.Invoke(this);
+      OnDead?.Invoke(this);
     }
   }
 

@@ -27,7 +27,6 @@ public class Field : MonoBehaviour
   public FieldData Data => _data;
   public Room Room => _room;
   public Status Status => _status;
-
   public GameManager Manager => _manager;
 
   public void Create(GameManager manager)
@@ -62,6 +61,18 @@ public class Field : MonoBehaviour
     _status = Status.Play;
   }
 
+  public void EnemyDead(Enemy enemy)
+  {
+    GetComponent<FieldCoinSpawner>().Spawn(enemy.transform.localPosition, enemy.AmountDroppedCoins);
+
+    var enemyCount = FindObjectsOfType<Enemy>().Length;
+    if (enemyCount <= 1)
+    {
+      CollectCoins();
+      OpenDoor();
+    }
+  }
+
   public void OpenDoor()
   {
     _border.Door.OpenDoor();
@@ -94,6 +105,12 @@ public class Field : MonoBehaviour
         Debug.LogError($"Not expected cell type: {type}");
         return _groundPrefab;
     }
+  }
+
+  public void PlayerDead()
+  {
+    GameOver();
+    _manager.PlayerDead();
   }
 
   private void CreateField(Room room)

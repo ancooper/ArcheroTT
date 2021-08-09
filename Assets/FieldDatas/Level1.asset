@@ -57,6 +57,7 @@ MonoBehaviour:
     y: 10
     width: 2
     height: 1
+  PlayerPrefab: {fileID: 2067724008459079581, guid: ddc422645166c5646915db9ad1b28883, type: 3}
   PlayerSpawnArea:
     x: 5
     y: 0
@@ -71,10 +72,16 @@ MonoBehaviour:
       width: 9
       height: 3
   - EnemyPrefab: {fileID: 4197431073494790879, guid: 5750e8095b463c8428df0e979f4b7c29, type: 3}
-    Amount: 4
+    Amount: 2
     SpawnArea:
       x: 1
       y: 10
-      width: 9
+      width: 3
       height: 3
-  PlayerPrefab: {fileID: 2067724008459079581, guid: ddc422645166c5646915db9ad1b28883, type: 3}
+  - EnemyPrefab: {fileID: 4197431073494790879, guid: 5750e8095b463c8428df0e979f4b7c29, type: 3}
+    Amount: 2
+    SpawnArea:
+      x: 7
+      y: 10
+      width: 3
+      height: 3

@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     }
   }
 
-  private IEnumerator RestartLevelAfterSeconds()
+  public IEnumerator RestartLevelAfterSeconds()
   {
     yield return new WaitForSeconds(1f);
     FadeOut();
@@ -59,29 +59,9 @@ public class GameManager : MonoBehaviour
     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
   }
 
-  public void UnitDeadListener(Unit unit)
+  public void PlayerDead()
   {
-    unit.OnDead.RemoveAllListeners();
-    if (unit.IsPlayer)
-    {
-      _field.GameOver();
-      _gameOverPanelAnimator.gameObject.SetActive(true);
-      StartCoroutine(RestartLevelAfterSeconds());
-    }
-    else
-      EnemyDead(unit);
-  }
-
-  private void EnemyDead(Unit unit)
-  {
-    var enemy = unit.GetComponent<Enemy>();
-    _coinSpawner.Spawn(unit.transform.localPosition, enemy.AmountDroppedCoins);
-
-    var enemyCount = FindObjectsOfType<Enemy>().Length;
-    if (enemyCount <= 1)
-    {
-      _field.CollectCoins();
-      _field.OpenDoor();
-    }
+    _gameOverPanelAnimator.gameObject.SetActive(true);
+    StartCoroutine(RestartLevelAfterSeconds());
   }
 }

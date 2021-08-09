@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(Unit))]
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
   [Header("Enemy settings")]
   [SerializeField] private float _moveTime;
@@ -13,20 +13,16 @@ public class Enemy : MonoBehaviour
   [Header("Drops by destroy")]
   [SerializeField] private RangeInt _coinsRange;
 
-  private Field _field;
-
-  public int AmountDroppedCoins => _coinsRange.Random();
   public float ContactDamage => _contactDamage;
 
   public float MoveTime => _moveTime;
   public float AimTime => _aimTime;
   public float AttackTime => _attackTime;
   public float RotateSpeed => _rotateSpeed;
-  public Field Field => _field;
+  public int AmountDroppedCoins => _coinsRange.Random();
 
-  public void Init(Field field, Vector3 position)
+  protected override void Dead(Unit unit)
   {
-    _field = field;
-    transform.localPosition = position;
+    _field.EnemyDead(this);
   }
 }

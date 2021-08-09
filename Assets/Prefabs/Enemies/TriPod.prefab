@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5722596680953408456}
   - component: {fileID: 887777456474124977}
   - component: {fileID: 4236189637040604866}
-  - component: {fileID: 448018163671172544}
   - component: {fileID: 8530478850788660694}
   - component: {fileID: 4197431073494790879}
+  - component: {fileID: 448018163671172544}
   - component: {fileID: 7826018398653194533}
   m_Layer: 0
   m_Name: TriPod
@@ -76,20 +76,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!114 &448018163671172544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27784076294992087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be0354d5107d6c409547d02e08d092e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: fee2fb2623324684ea4578917e103dc7, type: 2}
-  _bulletPrefab: {fileID: 1965746900717972903, guid: a4aeb75cc478d494a982c18e445f4499, type: 3}
 --- !u!114 &8530478850788660694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +125,20 @@ MonoBehaviour:
   _coinsRange:
     Min: 3
     Max: 5
+--- !u!114 &448018163671172544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27784076294992087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be0354d5107d6c409547d02e08d092e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponData: {fileID: 11400000, guid: fee2fb2623324684ea4578917e103dc7, type: 2}
+  _bulletPrefab: {fileID: 1965746900717972903, guid: a4aeb75cc478d494a982c18e445f4499, type: 3}
 --- !u!114 &7826018398653194533
 MonoBehaviour:
   m_ObjectHideFlags: 0

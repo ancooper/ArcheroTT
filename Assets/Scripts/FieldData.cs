@@ -13,11 +13,9 @@ public class FieldData : ScriptableObject
   public RectInt[] SpikeAreas;
 
   [Header("Spawn")]
+  public Player PlayerPrefab;
   public RectInt PlayerSpawnArea;
   public EnemySpawnData[] Enemies;
-
-  [Space]
-  public Player PlayerPrefab;
 
   private void OnValidate()
   {

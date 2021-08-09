@@ -4,8 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Field))]
 public class FieldUnitSpawner : MonoBehaviour
 {
-  private Field _field;
+  private readonly Vector2Int INVALIDPOINT = new Vector2Int(int.MinValue, int.MinValue);
 
+  private Field _field;
   private HashSet<Vector2Int> _usedPoints;
 
   private void Awake()
@@ -23,7 +24,7 @@ public class FieldUnitSpawner : MonoBehaviour
 
   private void SpawnPlayer()
   {
-    TrySpawnPlayer(_field.Room, _field.Data);
+    TrySpawnEntity(_field.Room, _field.Data.PlayerSpawnArea, _field.Data.PlayerPrefab);
   }
 
   private void SpawnEnemy()
@@ -31,51 +32,32 @@ public class FieldUnitSpawner : MonoBehaviour
     _usedPoints = new HashSet<Vector2Int>();
     foreach (var enemy in _field.Data.Enemies)
       for (var i = 0; i < enemy.Amount; i++)
-        TrySpawnOneEnemy(_field.Room, enemy);
+        TrySpawnEntity(_field.Room, enemy.SpawnArea, enemy.EnemyPrefab);
   }
 
-  private void TrySpawnPlayer(Room room, FieldData data)
+  private void TrySpawnEntity(Room room, RectInt area, Entity entity)
   {
     int tries = 10;
-    var spawnPoint = data.PlayerSpawnArea.RandomPoint();
-
-    while (tries > 0 && room[spawnPoint] != CellType.Ground)
-    {
-      spawnPoint = data.PlayerSpawnArea.RandomPoint();
-      tries--;
-    }
-
-    if (tries == 0)
-    {
-      Debug.Log($"Player spawn problem {data.PlayerSpawnArea}");
-      return;
-    }
-
-    var player = Instantiate(data.PlayerPrefab, transform, false);
-    player.transform.localPosition = _field.LocalPositionByPoint(room, spawnPoint);
-    player.GetComponent<Unit>().OnDead.AddListener(_field.Manager.UnitDeadListener);
+    var spawnPoint = FindEmptyPoint(room, area, tries);
+    if (spawnPoint != INVALIDPOINT)
+      Instantiate(entity, transform, false).Init(_field, _field.LocalPositionByPoint(room, spawnPoint));
   }
 
-  private void TrySpawnOneEnemy(Room room, EnemySpawnData enemyData)
+  private Vector2Int FindEmptyPoint(Room room, RectInt area, int tries)
   {
-    int tries = 10;
-    var spawnPoint = enemyData.SpawnArea.RandomPoint();
+    var spawnPoint = area.RandomPoint();
 
-    while (tries > 0 && (room[spawnPoint] != CellType.Ground || _usedPoints.Contains(spawnPoint)))
+    while (room[spawnPoint] != CellType.Ground)
     {
-      spawnPoint = enemyData.SpawnArea.RandomPoint();
       tries--;
+      if (tries == 0)
+      {
+        Debug.Log($"Player spawn problem {area}");
+        return INVALIDPOINT;
+      }
+      spawnPoint = area.RandomPoint();
     }
 
-    if (tries == 0)
-    {
-      Debug.Log($"Enemyes spawn problem {enemyData}");
-      return;
-    }
-
-    _usedPoints.Add(spawnPoint);
-    var enemy = Instantiate(enemyData.EnemyPrefab, transform, false);
-    enemy.Init(_field, _field.LocalPositionByPoint(room, spawnPoint));
-    enemy.GetComponent<Unit>().OnDead.AddListener(_field.Manager.UnitDeadListener);
+    return spawnPoint;
   }
 }
