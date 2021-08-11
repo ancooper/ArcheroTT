@@ -1,34 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(Unit)), RequireComponent(typeof(Enemy))]
-public class EnemyAI : MonoBehaviour
+[RequireComponent(typeof(Unit)), RequireComponent(typeof(Enemy))]
+public abstract class EnemyAI : MonoBehaviour
 {
+  protected EnemyAIContext _context;
   protected Enemy _enemy;
   protected Unit _unit;
-  protected Rigidbody2D _rb;
-  private Phase _phase;
-  private float _phaseTime;
-  private float _rotateSpeed;
-  protected bool _needAiming;
-  protected bool _needMoveTarget;
-  protected Vector2 _targetPosition;
-  private float _currentAngle;
 
   private void Awake()
   {
     _enemy = GetComponent<Enemy>();
     _unit = GetComponent<Unit>();
-    _rb = GetComponent<Rigidbody2D>();
 
-    InitPhase();
+    Init();
   }
 
-  private void InitPhase()
-  {
-    _phase = Phase.Aim;
-    _needAiming = true;
-    _phaseTime = PhaseLengthWithRandom(_phase);
-  }
+  protected abstract void Init();
 
   private void Update()
   {
@@ -38,25 +26,54 @@ public class EnemyAI : MonoBehaviour
     if (!_unit.IsALive)
       return;
 
-    _phaseTime -= Time.deltaTime;
-    if (_phaseTime <= 0)
-      ChangePhase();
+    _context.LifeTime();
+    if (_context.TimeIsOver)
+      _context.ChangePhaseToNext();
+    _context.Update();
+  }
+}
 
-    switch (_phase)
-    {
-      case Phase.Aim:
-        Aiming();
-        break;
-      case Phase.Attack:
-        Shooting();
-        break;
-      case Phase.Move:
-        Moving();
-        break;
-    }
+public class EnemyAIContext
+{
+  private Dictionary<System.Type, float> _lifeTimesByPhase;
+  private EnemyPhase _phase = null;
+  private Unit _unit;
+  private Enemy _enemy;
+
+  public Unit Unit => _unit;
+  public Enemy Enemy => _enemy;
+
+  public bool TimeIsOver => _phase.Time < 0;
+
+  public EnemyAIContext(Unit unit, Enemy enemy, Dictionary<System.Type, float> lifeTimesByPhase, EnemyPhase startPhase)
+  {
+    _lifeTimesByPhase = lifeTimesByPhase;
+    _unit = unit;
+    _enemy = enemy;
+    TransitionTo(startPhase);
   }
 
-  protected bool RotateTo(Vector2 direction)
+  public void TransitionTo(EnemyPhase phase)
+  {
+    _phase = phase;
+    _phase.SetContext(this);
+    _phase.SetLifeTime(_lifeTimesByPhase[phase.GetType()]);
+  }
+
+  public void ChangePhaseToNext() => _phase.NextPhase();
+  public void Update() => _phase.Update();
+  public void LifeTime() => _phase.LifeTime();
+
+  public Vector2 DirectionToPlayer()
+  {
+    var player = Object.FindObjectOfType<Player>();
+    if (player != null && player.GetComponent<Unit>().IsALive)
+      return player.transform.position - _unit.transform.position;
+    else
+      return Vector2.zero;
+  }
+
+  public bool RotateTo(Vector2 direction)
   {
     var deltaAngle = _enemy.RotateSpeed * Time.deltaTime;
     var angle = Vector2.SignedAngle(_unit.ViewAngle.ToVector2(), direction);
@@ -70,67 +87,52 @@ public class EnemyAI : MonoBehaviour
     _unit.ViewAngle += Mathf.Sign(angle) * deltaAngle;
     return false;
   }
-
-  protected virtual void Aiming()
-  {
-  }
-
-  protected virtual void Shooting()
-  {
-    _unit.Weapon.Shoot();
-  }
-
-  protected virtual void Moving()
-  {
-  }
-
-  private void ChangePhase()
-  {
-    if (_phase == Phase.Attack)
-    {
-      _phase = Phase.Move;
-      _needMoveTarget = true;
-    }
-    else if (_phase == Phase.Move)
-    {
-      _phase = Phase.Aim;
-      _needAiming = true;
-    }
-    else
-      _phase = Phase.Attack;
-
-    _rb.drag = _phase == Phase.Move ? 0f : 100f;
-    _phaseTime += PhaseLengthWithRandom(_phase);
-  }
-
-  private float PhaseLengthWithRandom(Phase phase)
-  {
-    float result;
-    switch (phase)
-    {
-      case Phase.Move:
-        result = _enemy.MoveTime;
-        break;
-      case Phase.Aim:
-        result = _enemy.AimTime;
-        break;
-      case Phase.Attack:
-      default:
-        result = _enemy.AttackTime;
-        break;
-    }
-    return result * Random.Range(0.8f, 1.2f);
-  }
-
-  protected void FindPlayer()
-  {
-    var player = FindObjectOfType<Player>();
-    if (player != null && player.GetComponent<Unit>().IsALive)
-      _targetPosition = player.transform.localPosition;
-    else
-      _unit.SetActive(false);
-  }
-
-  enum Phase { Move, Aim, Attack }
 }
 
+public abstract class EnemyPhase
+{
+  protected EnemyAIContext _context;
+  private float _time;
+
+  public float Time => _time;
+
+  public void SetContext(EnemyAIContext context) => _context = context;
+  public void SetLifeTime(float time) => _time = time;
+
+  public abstract void NextPhase();
+  public abstract void Update();
+
+  public void LifeTime() => _time -= UnityEngine.Time.deltaTime;
+}
+
+public class EnemyAimPhase : EnemyPhase
+{
+  private bool _needAiming = true;
+  private Vector2 _direction;
+
+  public override void NextPhase() => _context.TransitionTo(new EnemyAttackPhase());
+
+  public override void Update()
+  {
+    if (_needAiming)
+    {
+      _context.Unit.SetVelocity(Vector2.zero);
+      _direction = _context.DirectionToPlayer();
+      _needAiming = false;
+    }
+
+    _context.RotateTo(_direction);
+  }
+}
+
+public class EnemyAttackPhase : EnemyPhase
+{
+  public override void NextPhase() => _context.TransitionTo(new EnemyMovePhase());
+  public override void Update() => _context.Unit.Weapon.Shoot();
+}
+
+public class EnemyMovePhase : EnemyPhase
+{
+  public override void NextPhase() => _context.TransitionTo(new EnemyAimPhase());
+  public override void Update() { }
+}

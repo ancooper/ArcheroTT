@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9142025368460496852}
   - component: {fileID: 2067724008459079581}
   - component: {fileID: 546200257}
+  - component: {fileID: -1202371535304457055}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -93,18 +94,10 @@ MonoBehaviour:
   _attackRateMultiplier: 1
   _damageMultplier: 1
   _critProbability: 0.25
-  _bulletBehaviours:
-    Through: 0
-    TurnBack: 0
-    OverTheStone: 0
-    Ricochet: 0
-    WallBounce: 0
+  _bulletBehaviours: 0
   _healthBar: {fileID: 8604904284395477696}
   _damagePresenterPrefab: {fileID: 2270166428200260230, guid: 7754ea5ebc5bbdc45b1644036832413b, type: 3}
   _head: {fileID: 857992820338432117}
-  OnDead:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2067724008459079581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +124,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: f373fd5d12e00c5459db4534b0fe7c9b, type: 2}
   _bulletPrefab: {fileID: 1965746900717972903, guid: ea5bf024a06f5ad47b89008840f2cea2, type: 3}
+--- !u!114 &-1202371535304457055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040164716117679023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff748b4e53570104e86772fd6c51b1c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2739140116396162111
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,9 +73,9 @@ public class Field : MonoBehaviour
     }
   }
 
-  public void OpenDoor()
+  private void OpenDoor()
   {
-    _border.Door.OpenDoor();
+    _border.Door.Open();
   }
 
   public void CollectCoins()

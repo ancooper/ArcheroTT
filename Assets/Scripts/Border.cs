@@ -44,11 +44,11 @@ public class Border : MonoBehaviour
   {
     if (_size != _lastSize)
       Resize();
-    _lastSize = _size;
   }
 
   private void Resize()
   {
+    _lastSize = _size;
     var x = (_size.x + 1) / 2;
     var y = (_size.y + 1) / 2;
 

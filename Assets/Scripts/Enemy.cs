@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(Unit))]
-public class Enemy : Entity
+public class Enemy : Character
 {
   [Header("Enemy settings")]
   [SerializeField] private float _moveTime;

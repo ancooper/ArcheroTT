@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Weapon))]
+[RequireComponent(typeof(Weapon)), RequireComponent(typeof(Rigidbody2D))]
 public class Unit : MonoBehaviour
 {
   [Header("Settings")]
@@ -22,6 +22,7 @@ public class Unit : MonoBehaviour
   [SerializeField] private Transform _head;
 
   private bool _active;
+  private Rigidbody2D _rb;
   private Weapon _weapon;
   private bool _isPlayer;
   private float _maxHealth;
@@ -45,6 +46,7 @@ public class Unit : MonoBehaviour
   private void Awake()
   {
     _active = false;
+    _rb = GetComponent<Rigidbody2D>();
     _weapon = GetComponent<Weapon>();
     _isPlayer = TryGetComponent<Player>(out Player _);
     _maxHealth = _health;
@@ -82,4 +84,16 @@ public class Unit : MonoBehaviour
   }
 
   public void SetActive(bool active) => _active = active;
+
+  internal void SetVelocity(Vector2 velocity)
+  {
+    if (velocity.sqrMagnitude > 0.1f)
+    {
+      _rb.drag = 0f;
+      _rb.velocity = ViewAngle.ToVector2() * Speed;
+    }
+    else
+      _rb.drag = 100f;
+
+  }
 }

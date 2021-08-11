@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : Entity
+public class Player : Character
 {
   private Rigidbody2D _rb;
   private Vector2 _direction;

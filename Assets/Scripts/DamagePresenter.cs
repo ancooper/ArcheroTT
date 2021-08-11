@@ -1,8 +1,9 @@
+using TMPro;
 using UnityEngine;
 
 public class DamagePresenter : MonoBehaviour
 {
-  [SerializeField] private TMPro.TMP_Text _text;
+  [SerializeField] private TMP_Text _text;
 
   public void Init(int damage, bool crit)
   {

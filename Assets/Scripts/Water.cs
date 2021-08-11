@@ -21,14 +21,12 @@ public class Water : MonoBehaviour
     byte res = 0;
     for (int i = 0; i < 8; i++)
       if (mask[i < 4 ? i : i + 1] == 'w') res |= (byte)(1 << i);
-    // Debug.Log($"> {mask} -> [{Convert.ToString(res, 2)}]");
     return res;
   }
 
   public void SelectSpriteByMask(byte mask)
   {
     var swm = _sprites.Where(s => s.BMask == mask).FirstOrDefault();
-    // Debug.Log($" {Convert.ToString(mask, 2)} -> {swm != null}");
     if (swm != null)
       _sr.sprite = swm.Sprite;
   }

@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Unit))]
-public abstract class Entity : MonoBehaviour
+public abstract class Character : MonoBehaviour
 {
   protected Unit _unit;
   protected Field _field;

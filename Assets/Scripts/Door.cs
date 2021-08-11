@@ -16,7 +16,7 @@ public class Door : MonoBehaviour
     _exit.Init(manager);
   }
 
-  public void OpenDoor()
+  public void Open()
   {
     _lock.SetActive(false);
     _closedLeftDoor.SetActive(false);

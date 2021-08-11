@@ -17,9 +17,4 @@ MonoBehaviour:
   AttackRate: 1.5
   Damage: 150
   Accuracy: 0.85
-  BulletBehaviours:
-    Through: 1
-    TurnBack: 1
-    OverTheStone: 0
-    Ricochet: 0
-    WallBounce: 0
+  BulletBehaviours: 2

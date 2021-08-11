@@ -6,6 +6,7 @@ public class CameraResizer : MonoBehaviour
   [SerializeField] private Vector2 _size = new Vector2(14, 24);
 
   private Camera _camera;
+  private Vector2 _lastSize;
 
   private void Awake()
   {
@@ -22,9 +23,18 @@ public class CameraResizer : MonoBehaviour
 
   void Update()
   {
-    var verticalSize = _size.y * 0.5f;
-    var horizontalSize = _size.x * 0.5f / _camera.aspect;
+    ApplySizeWhenChanged();
+  }
 
-    _camera.orthographicSize = Mathf.Max(verticalSize, horizontalSize);
+  private void ApplySizeWhenChanged()
+  {
+    if (_lastSize != _size)
+    {
+      _lastSize = _size;
+      var verticalSize = _size.y * 0.5f;
+      var horizontalSize = _size.x * 0.5f / _camera.aspect;
+
+      _camera.orthographicSize = Mathf.Max(verticalSize, horizontalSize);
+    }
   }
 }
